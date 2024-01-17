@@ -20,10 +20,24 @@ class RandomChar extends Component {
     this.marvelService.getCharacter(id).then(this.onCharLoaded);
   };
 
+  shortDescr = (descriptionChar) => {
+    if (descriptionChar !== undefined && descriptionChar !== "") {
+      if (descriptionChar.length > 160) {
+        let str = descriptionChar.substring(0, 160) + "...";
+        return str;
+      } else {
+        return descriptionChar;
+      }
+    } else {
+      return "Данных о персонаже нет";
+    }
+  };
+
   render() {
     const {
       char: { name, description, thumbnail, homepage, wiki },
     } = this.state;
+
     return (
       <div className="randomchar">
         <div className="randomchar__block">
@@ -34,7 +48,7 @@ class RandomChar extends Component {
           />
           <div className="randomchar__info">
             <p className="randomchar__name">{name}</p>
-            <p className="randomchar__descr">{description}</p>
+            <p className="randomchar__descr">{this.shortDescr(description)}</p>
             <div className="randomchar__btns">
               <a href={homepage} className="button button__main">
                 <div className="inner">homepage</div>
