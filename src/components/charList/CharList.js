@@ -3,6 +3,7 @@ import { Component } from "react";
 import MarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
+import Abyss from "../../resources/img/abyss.jpg";
 
 class CharList extends Component {
   constructor(props) {
@@ -12,9 +13,11 @@ class CharList extends Component {
       loading: true,
       error: false,
     };
-    this.updateCharList();
   }
   marvelService = new MarvelService();
+  componentDidMount() {
+    this.updateCharList();
+  }
   onCharLoaded = (charList) => {
     this.setState({ charList, loading: false });
   };
@@ -32,10 +35,27 @@ class CharList extends Component {
   };
   renderCharList = (charArray) => {
     /**char__item_selected */
+    let imgStyleCover = { objectFit: "cover" };
+
+    let imgStyleContain = { objectFit: "contain" };
+
     const cahrs = charArray.map((el) => {
       return (
-        <li className="char__item" key={el.id}>
-          <img src={el.thumbnail} alt={el.name} />
+        <li
+          className="char__item"
+          key={el.id}
+          onClick={() => this.props.onCharSelected(el.id)}
+        >
+          <img
+            src={el.thumbnail}
+            alt={el.name}
+            style={
+              el.thumbnail ===
+              "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
+                ? imgStyleContain
+                : imgStyleCover
+            }
+          />
           <div className="char__name">{el.name}</div>
         </li>
       );
