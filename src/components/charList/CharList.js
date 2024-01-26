@@ -17,9 +17,10 @@ class CharList extends Component {
   marvelService = new MarvelService();
 
   componentDidMount() {
-    console.log("ddd");
-
-    this.onRequest();
+	this.marvelService
+	.getAllCharacters()
+	.then(res=>{this.onFirstLoad(res,210)})
+	.catch(this.onError);
   }
 
   onRequest = (offset) => {
@@ -49,7 +50,16 @@ class CharList extends Component {
       offset: offset + 9,
       charEnded: ended,
     }));
-  };
+	};
+	onFirstLoad = (charArr,charOff) => { 
+		this.setState(() => ({
+			charList: charArr,
+      loading: false,
+      newItemLoading: false,
+      offset: charOff,
+      charEnded: false,
+		 }));
+	}
 
   onError = () => {
     this.setState({
