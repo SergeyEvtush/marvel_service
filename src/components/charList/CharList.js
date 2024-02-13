@@ -23,6 +23,8 @@ class CharList extends Component {
 	.catch(this.onError);
   }
 
+	
+
   onRequest = (offset) => {
     this.onCharListLoading();
     this.marvelService
@@ -42,9 +44,10 @@ class CharList extends Component {
     if (newCharList.length < 9) {
       ended = true;
     }
-
     this.setState(({ offset, charList }) => ({
-      charList: [...charList, ...newCharList],
+		 charList: Array.from(new Set([...charList, ...newCharList]
+			 .map(e => JSON.stringify(e))))
+			 .map(e => JSON.parse(e)),
       loading: false,
       newItemLoading: false,
       offset: offset + 9,
